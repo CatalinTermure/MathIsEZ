@@ -1,0 +1,119 @@
+﻿<UserControl x:Class="MathIsEZ.ShapeToolbar"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:MathIsEZ"
+             mc:Ignorable="d" 
+             d:DesignHeight="1080" d:DesignWidth="160" Background="#222222">
+    <UserControl.Resources>
+        <ResourceDictionary Source="Styles.xaml"/>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="25"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="10*" />
+        </Grid.RowDefinitions>
+
+        <Button Grid.Column="1" Grid.Row="1"
+                Style="{StaticResource FlatButton}"
+                HorizontalContentAlignment="Stretch"
+                Click="BtnEllipse_Click" x:Name="BtnEllipse">
+            <Grid HorizontalAlignment="Stretch">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.8*" />
+                    <ColumnDefinition Width="2*" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="1" HorizontalAlignment="Center"
+                           Foreground="White" Text="Elipsă"
+                           VerticalAlignment="Center" FontSize="18px"/>
+                <Image Source="Resources/Ellipse.png"/>
+            </Grid>
+        </Button>
+        
+        <Button Grid.Column="1" Grid.Row="2"
+                Style="{StaticResource FlatButton}"
+                HorizontalContentAlignment="Stretch"
+                Click="BtnRectangle_Click" x:Name="BtnRectangle">
+            <Grid HorizontalAlignment="Stretch">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.8*" />
+                    <ColumnDefinition Width="2*" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="1" HorizontalAlignment="Center"
+                           Foreground="White" Text="Dreptunghi"
+                           VerticalAlignment="Center" FontSize="18px"/>
+                <Image Source="Resources/Rectangle.png"/>
+            </Grid>
+        </Button>
+        
+        <Button Grid.Column="1" Grid.Row="3"
+                Style="{StaticResource FlatButton}"
+                HorizontalContentAlignment="Stretch"
+                Click="BtnTriangle_Click" x:Name="BtnTriangle">
+            <Grid HorizontalAlignment="Stretch">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.8*" />
+                    <ColumnDefinition Width="2*" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="1" HorizontalAlignment="Center"
+                           Foreground="White" Text="Triunghi"
+                           VerticalAlignment="Center" FontSize="18px"/>
+                <Image Source="Resources/Rectangle.png"/>
+            </Grid>
+        </Button>
+
+        <Button Grid.Column="1" Grid.Row="4"
+                Style="{StaticResource FlatButton}"
+                HorizontalContentAlignment="Stretch"
+                Click="BtnPolygon_Click" x:Name="BtnPolygon">
+            <Grid HorizontalAlignment="Stretch">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.8*" />
+                    <ColumnDefinition Width="2*" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="1" HorizontalAlignment="Center"
+                           Foreground="White" Text="Poligon"
+                           VerticalAlignment="Center" FontSize="18px"/>
+                <Image Source="Resources/Rectangle.png"/>
+            </Grid>
+        </Button>
+
+        <Button Grid.Column="1" Grid.Row="5"
+                Style="{StaticResource FlatButton}"
+                HorizontalContentAlignment="Stretch"
+                Click="BtnGraph_Click" x:Name="BtnGraph">
+            <Grid HorizontalAlignment="Stretch">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.8*" />
+                    <ColumnDefinition Width="2*" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="1" HorizontalAlignment="Center"
+                           Foreground="White" Text="Grafic"
+                           VerticalAlignment="Center" FontSize="18px"/>
+                <Image Source="Resources/Rectangle.png"/>
+            </Grid>
+        </Button>
+
+        <Button Grid.Column="0" Grid.Row="0" Click="BtnHide_Click"
+                Style="{StaticResource FlatButton}" Width="25" Height="25"
+                HorizontalAlignment="Left" VerticalAlignment="Top">
+            <Image Source="Resources/BtnHide.png"/>
+        </Button>
+    </Grid>
+</UserControl>

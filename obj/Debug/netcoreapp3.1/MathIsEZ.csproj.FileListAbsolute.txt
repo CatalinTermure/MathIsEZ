@@ -18,3 +18,10 @@ C:\Users\CatalinPC\source\repos\MathIsEZ\obj\Debug\netcoreapp3.1\MathIsEZ.Assemb
 C:\Users\CatalinPC\source\repos\MathIsEZ\obj\Debug\netcoreapp3.1\MathIsEZ.dll
 C:\Users\CatalinPC\source\repos\MathIsEZ\obj\Debug\netcoreapp3.1\MathIsEZ.pdb
 C:\Users\CatalinPC\source\repos\MathIsEZ\obj\Debug\netcoreapp3.1\GeneratedInternalTypeHelper.g.cs
+C:\Users\CatalinPC\source\repos\MathIsEZ\obj\Debug\netcoreapp3.1\ShapeToolbar.g.cs
+C:\Users\CatalinPC\source\repos\MathIsEZ\obj\Debug\netcoreapp3.1\ShapeToolbar.baml
+C:\Users\CatalinPC\source\repos\MathIsEZ\obj\Debug\netcoreapp3.1\Styles.baml
+C:\Users\CatalinPC\source\repos\MathIsEZ\obj\Debug\netcoreapp3.1\LessonCreator.g.cs
+C:\Users\CatalinPC\source\repos\MathIsEZ\obj\Debug\netcoreapp3.1\LessonMenu.g.cs
+C:\Users\CatalinPC\source\repos\MathIsEZ\obj\Debug\netcoreapp3.1\LessonCreator.baml
+C:\Users\CatalinPC\source\repos\MathIsEZ\obj\Debug\netcoreapp3.1\LessonMenu.baml

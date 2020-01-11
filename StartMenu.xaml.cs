@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -25,7 +26,12 @@ namespace MathIsEZ
 
         private void BtnLectii_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Abc");
+            (Parent as MainWindow).Content = new LessonMenu();
+        }
+
+        private void BtnQuit_Click(object sender, RoutedEventArgs e)
+        {
+            (Parent as MainWindow).Close();
         }
     }
 }
