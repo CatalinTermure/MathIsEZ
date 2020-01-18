@@ -27,9 +27,15 @@ namespace MathIsEZ
 
     public partial class LessonCreator : UserControl
     {
-        // variables/constants for converting database coordinates to draw coordinates
-        private int WWidth, WHeight;
-        private const int EWidth = 1920, EHeight = 1080;
+        public LessonCreator()
+        {
+            InitializeComponent();
+
+            Loaded += LectureCreator_Loaded;
+        }
+
+        #region Drawing Shapes
+        // Logic for inserting shapes
 
         public DrawState currentlyDrawing = DrawState.NONE;
 
@@ -39,22 +45,70 @@ namespace MathIsEZ
             BtnShow.Visibility = Visibility.Collapsed;
         }
 
+        private List<Shape> shapes;
+        private List<Graph> graphs;
+
+        private Point? startLocation;
+        private List<Point> vertices;
+        private bool mouseup = true;
         private void LessonCanvas_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            //
+            if(currentlyDrawing == DrawState.ELLIPSE || currentlyDrawing == DrawState.RECTANGLE)
+            {
+                if (startLocation == null)
+                {
+                    startLocation = e.GetPosition(this);
+                }
+            }
+            else if(mouseup && currentlyDrawing == DrawState.TRIANGLE)
+            {
+                mouseup = false;
+                vertices.Add(e.GetPosition(this));
+                if (vertices.Count == 3)
+                {
+                    shapes.Add(new Shape(ShapeType.TRIANGLE, vertices.ToArray()));
+                    vertices.Clear();
+                }
+            }
+            else if(mouseup && currentlyDrawing == DrawState.POLYGON)
+            {
+                vertices.Add(e.GetPosition(this));
+            }
         }
 
-        public LessonCreator()
+        private void LessonCanvas_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            InitializeComponent();
+            switch(currentlyDrawing)
+            {
+                case DrawState.ELLIPSE:
+                    break;
+                case DrawState.RECTANGLE:
+                    break;
+                case DrawState.TRIANGLE:
+                    break;
+                case DrawState.POLYGON:
+                    break;
+                default:
+                    break;
+            }
 
-            Loaded += LectureCreator_Loaded;
+            startLocation = null;
+            mouseup = true;
         }
+
+        #endregion
+
+        #region Adjusting to resolution
+        // variables/constants for converting database coordinates to draw coordinates
+        private int WWidth, WHeight;
+        private const int EWidth = 1920, EHeight = 1080;
 
         private void LectureCreator_Loaded(object sender, RoutedEventArgs e)
         {
             WWidth = (int)(Parent as MainWindow).ActualWidth;
             WHeight = (int)(Parent as MainWindow).ActualHeight;
         }
+
+        #endregion
     }
 }

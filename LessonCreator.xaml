@@ -16,15 +16,14 @@
             <ColumnDefinition Width="7*"/>
         </Grid.ColumnDefinitions>
 
-        <local:ShapeToolbar x:Name="SToolbar" Grid.Column="0" />
+        <Canvas Grid.ColumnSpan="2" x:Name="LessonCanvas"
+                MouseDown="LessonCanvas_MouseDown" MouseUp="LessonCanvas_MouseUp" />
         <Button x:Name="BtnShow" Width="25" Height="25"
                 HorizontalAlignment="Left" VerticalAlignment="Top"
                 Style="{StaticResource FlatButton}"
                 Visibility="Collapsed" Click="BtnShow_Click">
             <Image Source="Resources/BtnShow.png"/>
         </Button>
-
-        <Canvas Grid.ColumnSpan="2" x:Name="LessonCanvas"
-                MouseDown="LessonCanvas_MouseDown" />
+        <local:ShapeToolbar x:Name="SToolbar" Grid.Column="0" />
     </Grid>
 </UserControl>

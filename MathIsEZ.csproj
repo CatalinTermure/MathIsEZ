@@ -10,7 +10,10 @@
     <None Remove="Resources\BtnHide.png" />
     <None Remove="Resources\BtnShow.png" />
     <None Remove="Resources\Ellipse.png" />
+    <None Remove="Resources\Graph.png" />
+    <None Remove="Resources\Polygon.png" />
     <None Remove="Resources\Rectangle.png" />
+    <None Remove="Resources\Triangle.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -30,7 +33,16 @@
     <Resource Include="Resources\Ellipse.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Resources\Graph.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Polygon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Resources\Rectangle.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Triangle.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows;
 using System.Text;
 
 namespace MathIsEZ
@@ -15,9 +16,9 @@ namespace MathIsEZ
     class Shape
     {
         public ShapeType type;
-        public float[] data;
+        public Point[] data;
 
-        public Shape(ShapeType type, float[] points)
+        public Shape(ShapeType type, Point[] points)
         {
             this.type = type;
             data = points;
