@@ -80,11 +80,11 @@ namespace MathIsEZ
 
         private void BtnColor_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            if(e.LeftButton == MouseButtonState.Pressed)
+            if(e.ChangedButton == MouseButton.Left)
             {
                 (((((Parent as Grid).Parent as Grid).Parent as ShapeToolbar).Parent as Grid).Parent as LessonCreator).DrawColor1 = (SolidColorBrush)(sender as Button).Foreground;
             }
-            else if (e.RightButton == MouseButtonState.Pressed)
+            else if (e.ChangedButton == MouseButton.Right)
             {
                 (((((Parent as Grid).Parent as Grid).Parent as ShapeToolbar).Parent as Grid).Parent as LessonCreator).DrawColor2 = (SolidColorBrush)(sender as Button).Foreground;
             }

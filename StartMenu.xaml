@@ -47,7 +47,7 @@
 
             <Button Grid.Row="1" Style="{StaticResource MainMenuButton}"
                     Click="BtnLectii_Click">
-                <TextBlock FontSize="40px" FontFamily="Futura" 
+                <TextBlock FontSize="40px" TextWrapping="Wrap" FontFamily="Futura" 
                            Foreground="White" 
                            Text="Lecții"/>
             </Button>

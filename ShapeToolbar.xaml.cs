@@ -23,6 +23,8 @@ namespace MathIsEZ
             InitializeComponent();
         }
 
+        #region Button click handlers
+
         private readonly SolidColorBrush DefaultBtnColor = new SolidColorBrush(Color.FromArgb(255, 34, 34, 34));
         private readonly SolidColorBrush HighlightBtnColor = new SolidColorBrush(Color.FromArgb(255, 51, 51, 51));
         private Button highlightedButton;
@@ -72,5 +74,13 @@ namespace MathIsEZ
             ((Parent as Grid).Parent as LessonCreator).currentlyDrawing = DrawState.GRAPH;
             HighlightButton(sender as Button);
         }
+
+        private void BtnText_Click(object sender, RoutedEventArgs e)
+        {
+            ((Parent as Grid).Parent as LessonCreator).currentlyDrawing = DrawState.TEXT;
+            HighlightButton(sender as Button);
+        }
+
+        #endregion
     }
 }

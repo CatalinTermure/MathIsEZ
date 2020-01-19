@@ -23,6 +23,7 @@
             <RowDefinition Height="1*" />
             <RowDefinition Height="1*" />
             <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
             <RowDefinition Height="5*" />
             <RowDefinition Height="4*" />
             <RowDefinition Height="25" />
@@ -44,7 +45,7 @@
                     <ColumnDefinition Width="2*" />
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.Column="1" HorizontalAlignment="Center"
+                <TextBlock FontFamily="Futura" Grid.Column="1" HorizontalAlignment="Center"
                            Foreground="White" Text="Elipsă"
                            VerticalAlignment="Center" FontSize="18px"/>
                 <Image Source="Resources/Ellipse.png"/>
@@ -61,7 +62,7 @@
                     <ColumnDefinition Width="2*" />
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.Column="1" HorizontalAlignment="Center"
+                <TextBlock FontFamily="Futura" Grid.Column="1" HorizontalAlignment="Center"
                            Foreground="White" Text="Dreptunghi"
                            VerticalAlignment="Center" FontSize="18px"/>
                 <Image Source="Resources/Rectangle.png"/>
@@ -78,7 +79,7 @@
                     <ColumnDefinition Width="2*" />
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.Column="1" HorizontalAlignment="Center"
+                <TextBlock FontFamily="Futura" Grid.Column="1" HorizontalAlignment="Center"
                            Foreground="White" Text="Triunghi"
                            VerticalAlignment="Center" FontSize="18px"/>
                 <Image Source="Resources/Triangle.png"/>
@@ -95,7 +96,7 @@
                     <ColumnDefinition Width="2*" />
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.Column="1" HorizontalAlignment="Center"
+                <TextBlock FontFamily="Futura" Grid.Column="1" HorizontalAlignment="Center"
                            Foreground="White" Text="Poligon"
                            VerticalAlignment="Center" FontSize="18px"/>
                 <Image Source="Resources/Polygon.png"/>
@@ -112,14 +113,33 @@
                     <ColumnDefinition Width="2*" />
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.Column="1" HorizontalAlignment="Center"
+                <TextBlock FontFamily="Futura" Grid.Column="1" HorizontalAlignment="Center"
                            Foreground="White" Text="Grafic"
                            VerticalAlignment="Center" FontSize="18px"/>
                 <Image Source="Resources/Graph.png"/>
             </Grid>
         </Button>
 
-        <Grid Grid.Row="8" Grid.Column="1">
+        <Button Grid.Column="1" Grid.Row="6"
+                Style="{StaticResource FlatButton}"
+                HorizontalContentAlignment="Stretch"
+                Click="BtnText_Click" x:Name="BtnText">
+            <Grid HorizontalAlignment="Stretch">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.8*" />
+                    <ColumnDefinition Width="2*" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock FontFamily="Futura" Grid.Column="1" HorizontalAlignment="Center"
+                           Foreground="White" Text="Text"
+                           VerticalAlignment="Center" FontSize="18px"/>
+                <Viewbox>
+                    <TextBlock Text="Abc" Foreground="White"/>
+                </Viewbox>
+            </Grid>
+        </Button>
+
+        <Grid Grid.Row="9" Grid.Column="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="0.1*" />
                 <RowDefinition Height="1*" />
@@ -153,10 +173,10 @@
                            FontSize="15" Grid.Row="1" Grid.Column="0"/>
 
                 <Button Grid.Row="0" Grid.Column="1" x:Name="Color1Btn"
-                        Style="{StaticResource ColorButton}"/>
+                        Style="{StaticResource ColorButton}" Foreground="White"/>
 
                 <Button Grid.Row="1" Grid.Column="1" x:Name="Color2Btn"
-                        Style="{StaticResource ColorButton}"/>
+                        Style="{StaticResource ColorButton}" Foreground="Black"/>
 
             </Grid>
 

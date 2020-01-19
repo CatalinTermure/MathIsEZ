@@ -13,6 +13,9 @@ namespace MathIsEZ
         POLYGON
     }
 
+    /// <summary>
+    /// Class for handling shapes inside a lesson
+    /// </summary>
     class Shape
     {
         public ShapeType type;

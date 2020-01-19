@@ -16,7 +16,7 @@
             <ColumnDefinition Width="7*"/>
         </Grid.ColumnDefinitions>
 
-        <Canvas Grid.ColumnSpan="2" x:Name="LessonCanvas"
+        <Canvas Grid.ColumnSpan="2" x:Name="LessonCanvas" Background="Transparent"
                 MouseDown="LessonCanvas_MouseDown" MouseUp="LessonCanvas_MouseUp" />
         <Button x:Name="BtnShow" Width="25" Height="25"
                 HorizontalAlignment="Left" VerticalAlignment="Top"
@@ -24,6 +24,7 @@
                 Visibility="Collapsed" Click="BtnShow_Click">
             <Image Source="Resources/BtnShow.png"/>
         </Button>
+
         <local:ShapeToolbar x:Name="SToolbar" Grid.Column="0" />
     </Grid>
 </UserControl>
