@@ -38,6 +38,35 @@ namespace MathIsEZ
         // Logic for inserting shapes
 
         public DrawState currentlyDrawing = DrawState.NONE;
+        private SolidColorBrush drawColor1 = new SolidColorBrush(Colors.White);
+        private SolidColorBrush drawColor2 = new SolidColorBrush(Colors.Black);
+
+        #region Logic for changing draw color
+
+        private void UpdateColor1(SolidColorBrush brush)
+        {
+            SToolbar.Color1Btn.Foreground = brush;
+            SToolbar.Color1Btn.InvalidateVisual();
+        }
+
+        private void UpdateColor2(SolidColorBrush brush)
+        {
+            SToolbar.Color2Btn.Foreground = brush;
+            SToolbar.Color2Btn.InvalidateVisual();
+        }
+
+        public SolidColorBrush DrawColor1 { 
+            get => drawColor1;
+            set => UpdateColor1(value);
+        }
+
+        public SolidColorBrush DrawColor2
+        {
+            get => drawColor2;
+            set => UpdateColor2(value);
+        }
+
+        #endregion
 
         private void BtnShow_Click(object sender, RoutedEventArgs e)
         {

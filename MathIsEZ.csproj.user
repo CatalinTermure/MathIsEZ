@@ -7,6 +7,9 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="ColorPicker.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="LessonCreator.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -21,6 +24,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Page Update="ColorPicker.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="LessonCreator.xaml">
       <SubType>Designer</SubType>
     </Page>

@@ -9,7 +9,7 @@
     <UserControl.Resources>
         <ResourceDictionary Source="Styles.xaml"/>
     </UserControl.Resources>
-    <Grid>
+    <Grid x:Name="ToolbarGrid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="25"/>
             <ColumnDefinition Width="1*"/>
@@ -23,10 +23,16 @@
             <RowDefinition Height="1*" />
             <RowDefinition Height="1*" />
             <RowDefinition Height="1*" />
-            <RowDefinition Height="6*" />
-            <RowDefinition Height="3*" />
+            <RowDefinition Height="5*" />
+            <RowDefinition Height="4*" />
             <RowDefinition Height="25" />
         </Grid.RowDefinitions>
+
+        <Button Grid.Column="0" Grid.Row="0" Click="BtnHide_Click"
+                Style="{StaticResource FlatButton}" Width="25" Height="25"
+                HorizontalAlignment="Left" VerticalAlignment="Top">
+            <Image Source="Resources/BtnHide.png"/>
+        </Button>
 
         <Button Grid.Column="1" Grid.Row="1"
                 Style="{StaticResource FlatButton}"
@@ -113,10 +119,48 @@
             </Grid>
         </Button>
 
-        <Button Grid.Column="0" Grid.Row="0" Click="BtnHide_Click"
-                Style="{StaticResource FlatButton}" Width="25" Height="25"
-                HorizontalAlignment="Left" VerticalAlignment="Top">
-            <Image Source="Resources/BtnHide.png"/>
-        </Button>
+        <Grid Grid.Row="8" Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="3*" />
+                <RowDefinition Height="0.1*" />
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="0.1*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Row="1" Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Text="Color 1:" Foreground="White"
+                           HorizontalAlignment="Center" VerticalAlignment="Center"
+                           FontSize="15" Grid.Row="0" Grid.Column="0"/>
+
+                <TextBlock Text="Color 2:" Foreground="White"
+                           HorizontalAlignment="Center" VerticalAlignment="Center"
+                           FontSize="15" Grid.Row="1" Grid.Column="0"/>
+
+                <Button Grid.Row="0" Grid.Column="1" x:Name="Color1Btn"
+                        Style="{StaticResource ColorButton}"/>
+
+                <Button Grid.Row="1" Grid.Column="1" x:Name="Color2Btn"
+                        Style="{StaticResource ColorButton}"/>
+
+            </Grid>
+
+            <local:ColorPicker Grid.Row="2" Grid.Column="1"/>
+        </Grid>
     </Grid>
 </UserControl>
