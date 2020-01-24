@@ -29,10 +29,12 @@ namespace MathIsEZ
         private readonly SolidColorBrush HighlightBtnColor = new SolidColorBrush(Color.FromArgb(255, 51, 51, 51));
         private Button highlightedButton;
 
+        // Logic for collapsing ShapeToolbar
         private void BtnHide_Click(object sender, RoutedEventArgs e)
         {
             ((Parent as Grid).Parent as LessonCreator).BtnShow.Visibility = Visibility.Visible;
             Visibility = Visibility.Collapsed;
+            ((Parent as Grid).Parent as LessonCreator).LessonCanvas.Focus();
         }
 
         private void HighlightButton(Button btn)
@@ -47,37 +49,37 @@ namespace MathIsEZ
 
         private void BtnEllipse_Click(object sender, RoutedEventArgs e)
         {
-            ((Parent as Grid).Parent as LessonCreator).currentlyDrawing = DrawState.ELLIPSE;
+            ((Parent as Grid).Parent as LessonCreator).CurrentlyDrawing = DrawState.ELLIPSE;
             HighlightButton(sender as Button);
         }
 
         private void BtnRectangle_Click(object sender, RoutedEventArgs e)
         {
-            ((Parent as Grid).Parent as LessonCreator).currentlyDrawing = DrawState.RECTANGLE;
+            ((Parent as Grid).Parent as LessonCreator).CurrentlyDrawing = DrawState.RECTANGLE;
             HighlightButton(sender as Button);
         }
 
         private void BtnPolygon_Click(object sender, RoutedEventArgs e)
         {
-            ((Parent as Grid).Parent as LessonCreator).currentlyDrawing = DrawState.POLYGON;
+            ((Parent as Grid).Parent as LessonCreator).CurrentlyDrawing = DrawState.POLYGON;
             HighlightButton(sender as Button);
         }
 
         private void BtnTriangle_Click(object sender, RoutedEventArgs e)
         {
-            ((Parent as Grid).Parent as LessonCreator).currentlyDrawing = DrawState.TRIANGLE;
+            ((Parent as Grid).Parent as LessonCreator).CurrentlyDrawing = DrawState.TRIANGLE;
             HighlightButton(sender as Button);
         }
 
         private void BtnGraph_Click(object sender, RoutedEventArgs e)
         {
-            ((Parent as Grid).Parent as LessonCreator).currentlyDrawing = DrawState.GRAPH;
+            ((Parent as Grid).Parent as LessonCreator).CurrentlyDrawing = DrawState.GRAPH;
             HighlightButton(sender as Button);
         }
 
         private void BtnText_Click(object sender, RoutedEventArgs e)
         {
-            ((Parent as Grid).Parent as LessonCreator).currentlyDrawing = DrawState.TEXT;
+            ((Parent as Grid).Parent as LessonCreator).CurrentlyDrawing = DrawState.TEXT;
             HighlightButton(sender as Button);
         }
 

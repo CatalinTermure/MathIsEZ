@@ -31,7 +31,7 @@
 
         <Button Grid.Column="0" Grid.Row="0" Click="BtnHide_Click"
                 Style="{StaticResource FlatButton}" Width="25" Height="25"
-                HorizontalAlignment="Left" VerticalAlignment="Top">
+                HorizontalAlignment="Left" VerticalAlignment="Top" Focusable="False">
             <Image Source="Resources/BtnHide.png"/>
         </Button>
 
