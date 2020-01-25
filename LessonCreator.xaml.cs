@@ -41,7 +41,7 @@ namespace MathIsEZ
             WWidth = (int)(Parent as MainWindow).ActualWidth;
             WHeight = (int)(Parent as MainWindow).ActualHeight;
 
-            canvasRedrawTimer.Interval = TimeSpan.FromMilliseconds(20);
+            canvasRedrawTimer.Interval = TimeSpan.FromMilliseconds(10);
             canvasRedrawTimer.Tick += CanvasRedrawTimer_Tick;
             canvasRedrawTimer.Start();
         }
@@ -92,13 +92,25 @@ namespace MathIsEZ
         #region Drawing Shapes
         // Logic for inserting shapes
 
-
-        public DrawState CurrentlyDrawing = DrawState.NONE;
+        public DrawState currentlyDrawing = DrawState.NONE;
+        public DrawState CurrentlyDrawing
+        {
+            get => currentlyDrawing;
+            set
+            {
+                vertices.Clear();
+                startLocation = null;
+                currentlyDrawing = value;
+                PolygonAuxiliaryGeometry.Clear();
+            }
+        }
 
         public double drawThickness = 5;
 
         private SolidColorBrush drawColor1 = new SolidColorBrush(Colors.White);
         private SolidColorBrush drawColor2 = new SolidColorBrush(Colors.Black);
+
+        public bool doFill = false;
 
         #region Logic for changing draw color
 
@@ -114,7 +126,10 @@ namespace MathIsEZ
 
         public SolidColorBrush DrawColor2
         {
-            get => drawColor2;
+            get
+            {
+                return doFill ? drawColor2 : null;
+            }
             set
             {
                 SToolbar.Color2Btn.Foreground = value;
@@ -150,8 +165,8 @@ namespace MathIsEZ
             shapes.Add(new Shape(ShapeType.ELLIPSE, new Point[2] { a, b }));
             Ellipse toAdd = new Ellipse
             {
-                Stroke = drawColor1,
-                Fill = drawColor2,
+                Stroke = DrawColor1,
+                Fill = DrawColor2,
                 Width = Math.Abs(b.X - a.X),
                 Height = Math.Abs(b.Y - a.Y),
                 StrokeThickness = drawThickness
@@ -166,8 +181,8 @@ namespace MathIsEZ
             shapes.Add(new Shape(ShapeType.RECTANGLE, new Point[2] { a, b }));
             Rectangle toAdd = new Rectangle
             {
-                Stroke = drawColor1,
-                Fill = drawColor2,
+                Stroke = DrawColor1,
+                Fill = DrawColor2,
                 Width = Math.Abs(b.X - a.X),
                 Height = Math.Abs(b.Y - a.Y),
                 StrokeThickness = drawThickness
@@ -226,9 +241,9 @@ namespace MathIsEZ
                         LessonCanvas.Children.Add(new Polygon()
                         {
                             Points = new PointCollection(vertices),
-                            Fill = drawColor2,
+                            Fill = DrawColor2,
                             StrokeThickness = drawThickness,
-                            Stroke = drawColor1
+                            Stroke = DrawColor1
                         });
                         vertices.Clear();
                     }
@@ -275,7 +290,7 @@ namespace MathIsEZ
 
         #region Additional effects when drawing shapes
 
-        PathGeometry PolygonAuxiliaryGeometry = new PathGeometry();
+        readonly PathGeometry PolygonAuxiliaryGeometry = new PathGeometry();
 
         private void RenderEffects(DrawingContext dc)
         {
@@ -285,7 +300,7 @@ namespace MathIsEZ
                     if (startLocation.HasValue)
                     {
                         Point mouseloc = Mouse.GetPosition(this);
-                        dc.DrawEllipse(drawColor2, new Pen(drawColor1, drawThickness), new Point((mouseloc.X + startLocation.Value.X) / 2, (mouseloc.Y + startLocation.Value.Y) / 2),
+                        dc.DrawEllipse(DrawColor2, new Pen(DrawColor1, drawThickness), new Point((mouseloc.X + startLocation.Value.X) / 2, (mouseloc.Y + startLocation.Value.Y) / 2),
                             Math.Abs(mouseloc.X - startLocation.Value.X) / 2, Math.Abs(mouseloc.Y - startLocation.Value.Y) / 2);
                     }
                     break;
@@ -293,7 +308,7 @@ namespace MathIsEZ
                     if (startLocation.HasValue)
                     {
                         Point mouseloc = Mouse.GetPosition(this);
-                        dc.DrawRectangle(drawColor2, new Pen(drawColor1, drawThickness), new Rect(startLocation.Value, mouseloc));
+                        dc.DrawRectangle(DrawColor2, new Pen(DrawColor1, drawThickness), new Rect(startLocation.Value, mouseloc));
                     }
                     break;
                 case DrawState.POLYGON:
@@ -303,7 +318,7 @@ namespace MathIsEZ
                         {
                             dc.DrawEllipse(null, new Pen(Brushes.White, 0.4), vertex, VertexSpace, VertexSpace);
                         }
-                        dc.DrawGeometry(drawColor2, new Pen(drawColor1, drawThickness), PolygonAuxiliaryGeometry);
+                        dc.DrawGeometry(DrawColor2, new Pen(DrawColor1, drawThickness), PolygonAuxiliaryGeometry);
                     }
                     else if(vertices.Count == 1)
                     {
@@ -315,7 +330,7 @@ namespace MathIsEZ
             }
         }
 
-        private DispatcherTimer canvasRedrawTimer = new DispatcherTimer();
+        private readonly DispatcherTimer canvasRedrawTimer = new DispatcherTimer();
 
         private void CanvasRedrawTimer_Tick(object sender, EventArgs e)
         {

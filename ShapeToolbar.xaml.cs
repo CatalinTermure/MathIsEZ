@@ -84,5 +84,19 @@ namespace MathIsEZ
         }
 
         #endregion
+
+        #region Additional option logic
+
+        private void FillCheckbox_Checked(object sender, RoutedEventArgs e)
+        {
+            ((Parent as Grid).Parent as LessonCreator).doFill = true;
+        }
+
+        private void FillCheckbox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            ((Parent as Grid).Parent as LessonCreator).doFill = false;
+        }
+
+        #endregion
     }
 }

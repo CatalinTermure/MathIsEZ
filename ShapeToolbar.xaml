@@ -139,6 +139,39 @@
             </Grid>
         </Button>
 
+        <Grid Grid.Row="8" Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                
+            </Grid.ColumnDefinitions>
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="0.5*" />
+                </Grid.ColumnDefinitions>
+                
+                <TextBlock Text="Fill shape" Foreground="White" FontFamily="Futura"
+                           VerticalAlignment="Center" HorizontalAlignment="Center"
+                           FontSize="18px"/>
+
+                <CheckBox Grid.Column="1" x:Name="FillCheckbox"
+                          HorizontalAlignment="Center" VerticalAlignment="Center"
+                          Checked="FillCheckbox_Checked" Unchecked="FillCheckbox_Unchecked"/>
+            </Grid>
+            
+
+        </Grid>
+
         <Grid Grid.Row="9" Grid.Column="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="0.1*" />
