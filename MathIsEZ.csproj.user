@@ -22,6 +22,9 @@
     <Compile Update="StartMenu.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Timeline.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Page Update="ColorPicker.xaml">
@@ -43,6 +46,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Styles.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Timeline.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

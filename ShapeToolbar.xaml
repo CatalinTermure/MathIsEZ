@@ -160,9 +160,9 @@
                     <ColumnDefinition Width="0.5*" />
                 </Grid.ColumnDefinitions>
                 
-                <TextBlock Text="Fill shape" Foreground="White" FontFamily="Futura"
+                <TextBlock Text="Umple forma" Foreground="White" FontFamily="Futura"
                            VerticalAlignment="Center" HorizontalAlignment="Center"
-                           FontSize="18px"/>
+                           FontSize="15px"/>
 
                 <CheckBox Grid.Column="1" x:Name="FillCheckbox"
                           HorizontalAlignment="Center" VerticalAlignment="Center"

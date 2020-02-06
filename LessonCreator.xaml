@@ -17,9 +17,15 @@
             <ColumnDefinition Width="7*"/>
         </Grid.ColumnDefinitions>
 
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+
         <Canvas Grid.ColumnSpan="2" x:Name="LessonCanvas" Background="Transparent"
                 MouseDown="LessonCanvas_MouseDown" MouseUp="LessonCanvas_MouseUp"
-                Focusable="True" IsKeyboardFocusedChanged="LessonCanvas_IsKeyboardFocusedChanged"/>
+                Focusable="True" IsKeyboardFocusedChanged="LessonCanvas_IsKeyboardFocusedChanged"
+                Grid.RowSpan="2" />
 
         <Button x:Name="BtnShow" Width="25" Height="25"
                 HorizontalAlignment="Left" VerticalAlignment="Top"
@@ -28,8 +34,10 @@
             <Image Source="Resources/BtnShow.png"/>
         </Button>
 
-        <local:DrawCanvas Grid.ColumnSpan="2" x:Name="DrawingCanvas" />
+        <local:DrawCanvas Grid.ColumnSpan="2" x:Name="DrawingCanvas" Grid.RowSpan="2" />
 
         <local:ShapeToolbar x:Name="SToolbar" Grid.Column="0" />
+
+        <local:Timeline Grid.Row="1" Grid.ColumnSpan="2" />
     </Grid>
 </UserControl>
