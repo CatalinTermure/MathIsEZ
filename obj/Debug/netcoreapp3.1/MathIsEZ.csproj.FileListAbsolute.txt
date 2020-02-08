@@ -29,3 +29,4 @@ C:\Users\CatalinPC\source\repos\MathIsEZ\obj\Debug\netcoreapp3.1\ColorPicker.g.c
 C:\Users\CatalinPC\source\repos\MathIsEZ\obj\Debug\netcoreapp3.1\ColorPicker.baml
 C:\Users\CatalinPC\source\repos\MathIsEZ\obj\Debug\netcoreapp3.1\Timeline.g.cs
 C:\Users\CatalinPC\source\repos\MathIsEZ\obj\Debug\netcoreapp3.1\Timeline.baml
+C:\Users\CatalinPC\source\repos\MathIsEZ\obj\Debug\netcoreapp3.1\Themes.baml

@@ -22,9 +22,9 @@ namespace MathIsEZ
         public ShapeType type;
 
         /// <summary>
-        /// Array of points representing vertices(in the case of triangles and polygons), top-left/bottom-right(in the case of ellipses and rectangles).
+        /// Array of points representing vertices(in the case of triangles and polygons), or top-left/bottom-right coordinates(in the case of ellipses and rectangles).
         /// </summary>
-        public Point[] data;
+        public Point[] points;
 
         /// <summary>
         /// Brushes for drawing the shape
@@ -53,7 +53,7 @@ namespace MathIsEZ
         public Shape(ShapeType type, Point[] points, Brush stroke, Brush fill, int start, int end)
         {
             this.type = type;
-            data = points;
+            this.points = points;
             this.stroke = stroke;
             this.fill = fill;
             this.start = start;

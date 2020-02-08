@@ -48,6 +48,9 @@
     <Page Update="Styles.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Themes.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Timeline.xaml">
       <SubType>Designer</SubType>
     </Page>

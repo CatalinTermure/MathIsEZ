@@ -9,6 +9,15 @@ namespace MathIsEZ
     /// </summary>
     class TextBlob
     {
+        public string[] lines;
 
+        public int start;
+
+        public int end;
+
+        public TextBlob()
+        {
+            //
+        }
     }
 }

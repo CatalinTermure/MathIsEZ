@@ -19,6 +19,9 @@ namespace MathIsEZ
             IsHitTestVisible = false;
         }
 
+        /// <summary>
+        /// Delegate used for drawing onto a DrawCanvas
+        /// </summary>
         public RenderFunction ToDraw;
 
         protected override void OnRender(DrawingContext dc)

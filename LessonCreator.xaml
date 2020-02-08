@@ -38,6 +38,6 @@
 
         <local:ShapeToolbar x:Name="SToolbar" Grid.Column="0" />
 
-        <local:Timeline Grid.Row="1" Grid.ColumnSpan="2" />
+        <local:Timeline Grid.Row="1" Grid.ColumnSpan="2" x:Name="LessonTimeline" />
     </Grid>
 </UserControl>

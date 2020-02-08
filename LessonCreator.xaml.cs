@@ -88,6 +88,10 @@ namespace MathIsEZ
 
         #endregion
 
+        #region Timeline handlers
+
+        #endregion
+
         #region Adjusting to resolution
         // variables/constants for converting database coordinates to draw coordinates
         private int WWidth, WHeight;
@@ -108,6 +112,8 @@ namespace MathIsEZ
         #region Drawing Shapes
         // Logic for inserting shapes
 
+        #region Fields and properties used for drawing
+
         public DrawState currentlyDrawing = DrawState.NONE;
         public DrawState CurrentlyDrawing
         {
@@ -122,13 +128,10 @@ namespace MathIsEZ
         }
 
         public double drawThickness = 5;
+        public bool doFill = false;
 
         private Brush drawColor1 = new SolidColorBrush(Colors.White);
         private Brush drawColor2 = new SolidColorBrush(Colors.Black);
-
-        public bool doFill = false;
-
-        #region Logic for changing draw color
 
         public Brush DrawColor1 { 
             get => drawColor1;
@@ -156,14 +159,13 @@ namespace MathIsEZ
 
         #endregion
 
-        /// <summary>
-        /// Returns the distance between two points.
-        /// </summary>
-        private double GetDistance(Point a, Point b) => Math.Sqrt((a.X - b.X) * (a.X - b.X) + (a.Y - b.Y) * (a.Y - b.Y));
+        #region Fields and properties for storing lesson data 
 
         private List<Shape> shapes = new List<Shape>();
         private List<Graph> graphs = new List<Graph>();
         private List<TextBlob> texts = new List<TextBlob>();
+
+        #endregion
 
         private Point? startLocation;
         private readonly List<Point> vertices = new List<Point>();
@@ -171,7 +173,7 @@ namespace MathIsEZ
         private const double VertexSpace = 8;
 
         #region Mouse events for editing shape attributes
-
+        /// TODO
         #endregion
 
         #region Helper functions for inserting shapes
@@ -389,6 +391,15 @@ namespace MathIsEZ
         }
 
         #endregion
+
+        #endregion
+
+        #region Helper functions
+
+        /// <summary>
+        /// Returns the distance between two points.
+        /// </summary>
+        private double GetDistance(Point a, Point b) => Math.Sqrt((a.X - b.X) * (a.X - b.X) + (a.Y - b.Y) * (a.Y - b.Y));
 
         #endregion
     }
