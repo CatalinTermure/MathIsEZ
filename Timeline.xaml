@@ -6,23 +6,8 @@
              xmlns:local="clr-namespace:MathIsEZ"
              mc:Ignorable="d" 
              d:DesignHeight="95" d:DesignWidth="1920" Background="#222222">
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="701*"/>
-            <ColumnDefinition Width="259*"/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="1*" />
-            <RowDefinition Height="4*" />
-        </Grid.RowDefinitions>
-
-        <Border BorderBrush="Black" Grid.Row="1" BorderThickness="0, 3, 0, 0" Grid.ColumnSpan="2">
-            <local:DrawCanvas x:Name="VisualCanvas" />
-        </Border>
-
-        <Border BorderBrush="Black" Grid.Row="0" BorderThickness="0, 3, 0, 0" Grid.ColumnSpan="2">
-            
-        </Border>
-    </Grid>
+    <Border BorderBrush="Black" Grid.Row="1" BorderThickness="0, 3, 0, 0" Grid.ColumnSpan="2">
+        <local:DrawCanvas x:Name="VisualCanvas" />
+    </Border>
 
 </UserControl>
