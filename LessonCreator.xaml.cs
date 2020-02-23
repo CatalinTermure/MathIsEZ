@@ -264,14 +264,30 @@ namespace MathIsEZ
 
                     if (isClosed)
                     {
-                        PolygonAuxiliaryGeometry.Clear();
-                        LessonCanvas.Children.Add(new Polygon()
+                        if(vertices.Count == 2)
                         {
-                            Points = new PointCollection(vertices),
-                            Fill = DrawColor2,
-                            StrokeThickness = drawThickness,
-                            Stroke = DrawColor1
-                        });
+                            LessonCanvas.Children.Add(new Line()
+                            {
+                                Stroke = DrawColor1,
+                                Fill = DrawColor2,
+                                StrokeThickness = drawThickness,
+                                X1 = vertices[0].X,
+                                X2 = vertices[1].X,
+                                Y1 = vertices[0].Y,
+                                Y2 = vertices[1].Y
+                            });
+                        }
+                        else
+                        {
+                            LessonCanvas.Children.Add(new Polygon()
+                            {
+                                Points = new PointCollection(vertices),
+                                Fill = DrawColor2,
+                                StrokeThickness = drawThickness,
+                                Stroke = DrawColor1
+                            });
+                        }
+                        PolygonAuxiliaryGeometry.Clear();
                         vertices.Clear();
                     }
                     else

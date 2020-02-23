@@ -10,11 +10,11 @@ none
 false
 TRACE;RELEASE;NETCOREAPP;NETCOREAPP3_1
 C:\Users\CatalinPC\source\repos\MathIsEZ\App.xaml
-22017970274
+9-255317914
 
-4-684918873
+15-1370686051
 1921654412462
-MainWindow.xaml;StartMenu.xaml;
+ColorPicker.xaml;LessonCreator.xaml;LessonMenu.xaml;MainWindow.xaml;ShapeToolbar.xaml;StartMenu.xaml;Styles.xaml;Themes.xaml;Timeline.xaml;
 
-False
+True
 
