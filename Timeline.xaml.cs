@@ -41,7 +41,7 @@ namespace MathIsEZ
             get => startTime;
             set
             {
-                if(CurrentTime - value <= Gradations * scale && CurrentTime >= value)
+                if(value > 0 && CurrentTime - value <= Gradations * scale && CurrentTime >= value)
                 {
                     startTime = value;
                     VisualCanvas.InvalidateVisual();
@@ -82,7 +82,7 @@ namespace MathIsEZ
             double upLimit = ActualWidth - startX;
             for (int i = 0; gradationPosition <= upLimit; i++, gradationPosition += step)
             {
-                dc.DrawText(new FormattedText($"{(i + StartTime / scale + (StartTime > 0 && StartTime % scale != 0 ? 1 : 0)) * scale}", System.Globalization.CultureInfo.GetCultureInfo("en-us"),
+                dc.DrawText(new FormattedText($"{(i + StartTime / scale + (StartTime % scale != 0 ? 1 : 0)) * scale}", System.Globalization.CultureInfo.GetCultureInfo("en-us"),
                     FlowDirection.LeftToRight, new Typeface("Futura"), (11 - Gradations / 30) * ActualWidth / 1570d, Brushes.White, VisualTreeHelper.GetDpi(this).PixelsPerDip),
                     new Point(gradationPosition - 10, startY - 15 + Gradations / 30));
                 dc.DrawLine(linePen, new Point(gradationPosition, startY), 

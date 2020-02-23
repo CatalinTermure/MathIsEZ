@@ -7,7 +7,8 @@
              mc:Ignorable="d" 
              d:DesignHeight="1080" d:DesignWidth="1920"
              Background="#111111" KeyUp="LessonCreator_KeyUp"
-             KeyDown="LessonCreator_KeyDown" Loaded="LessonCreator_Loaded">
+             KeyDown="LessonCreator_KeyDown" Loaded="LessonCreator_Loaded"
+             MouseDown="LessonCanvas_MouseDown" MouseUp="LessonCanvas_MouseUp">
     <UserControl.Resources>
         <ResourceDictionary Source="Styles.xaml"/>
     </UserControl.Resources>
@@ -22,9 +23,7 @@
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
 
-        <Canvas Grid.ColumnSpan="2" x:Name="LessonCanvas" Background="Transparent"
-                MouseDown="LessonCanvas_MouseDown" MouseUp="LessonCanvas_MouseUp"
-                Focusable="True" IsKeyboardFocusedChanged="LessonCanvas_IsKeyboardFocusedChanged"
+        <local:DrawCanvas Grid.ColumnSpan="2" x:Name="LessonCanvas"
                 Grid.RowSpan="2" />
 
         <Button x:Name="BtnShow" Width="25" Height="25"
@@ -33,8 +32,6 @@
                 Visibility="Collapsed" Click="BtnShow_Click" Focusable="False">
             <Image Source="Resources/BtnShow.png"/>
         </Button>
-
-        <local:DrawCanvas Grid.ColumnSpan="2" x:Name="DrawingCanvas" Grid.RowSpan="2" />
 
         <local:ShapeToolbar x:Name="SToolbar" Grid.Column="0" />
 

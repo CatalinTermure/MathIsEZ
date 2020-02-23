@@ -33,17 +33,23 @@ namespace MathIsEZ
         {
             InitializeComponent();
 
-            DrawingCanvas.ToDraw = RenderEffects;
+            LessonCanvas.ToDraw = RenderShapes;
+            redrawTimer.Tick += RedrawTimer_Tick;
+            redrawTimer.Interval = TimeSpan.FromMilliseconds(10);
+            redrawTimer.Start();
         }
+
+        private void RedrawTimer_Tick(object sender, EventArgs e)
+        {
+            LessonCanvas.InvalidateVisual();
+        }
+
+        private DispatcherTimer redrawTimer = new DispatcherTimer();
 
         private void LessonCreator_Loaded(object sender, RoutedEventArgs e)
         {
             WWidth = (int)(Parent as MainWindow).ActualWidth;
             WHeight = (int)(Parent as MainWindow).ActualHeight;
-
-            canvasRedrawTimer.Interval = TimeSpan.FromMilliseconds(10);
-            canvasRedrawTimer.Tick += CanvasRedrawTimer_Tick;
-            canvasRedrawTimer.Start();
         }
 
         #region Keyboard shortcuts for editing shapes
@@ -66,10 +72,7 @@ namespace MathIsEZ
         {
             if(e.Key == Key.Z && ctrlPressed)
             {
-                try
-                {
-                    LessonCanvas.Children.RemoveAt(LessonCanvas.Children.Count - 1);
-                } catch(ArgumentOutOfRangeException){}
+                throw new NotImplementedException("Implement ctrl+z after refactoring drawing code.");
             }
             else if (e.Key == Key.LeftShift)
             {
@@ -109,7 +112,7 @@ namespace MathIsEZ
             LessonCanvas.Focus();
         }
 
-        #region Drawing Shapes
+        #region Drawing shapes and graphs
         // Logic for inserting shapes
 
         #region Fields and properties used for drawing
@@ -186,17 +189,18 @@ namespace MathIsEZ
                 b.X = a.X + Math.Sign(b.X - a.X) * sz;
                 b.Y = a.Y + Math.Sign(b.Y - a.Y) * sz;
             }
-            Ellipse toAdd = new Ellipse
-            {
+            double minX = Math.Min(a.X, b.X);
+            double maxX = Math.Max(a.X, b.X);
+            double minY = Math.Min(a.Y, b.Y);
+            double maxY = Math.Max(a.Y, b.Y);
+            shapes.Add(new Shape(ShapeType.ELLIPSE) {
+                Points = new Point[]{ new Point(minX, minY), new Point(maxX, maxY) }, 
                 Stroke = DrawColor1,
+                StrokeThickness = drawThickness,
                 Fill = DrawColor2,
-                Width = Math.Abs(b.X - a.X) + drawThickness,
-                Height = Math.Abs(b.Y - a.Y) + drawThickness,
-                StrokeThickness = drawThickness
-            };
-            ThicknessConverter converter = new ThicknessConverter();
-            toAdd.Margin = (Thickness)converter.ConvertFrom($"{(Math.Min(a.X, b.X) - drawThickness / 2).ToString()}, {(Math.Min(a.Y, b.Y) - drawThickness / 2).ToString()}, 0, 0");
-            LessonCanvas.Children.Add(toAdd);
+                Start = LessonTimeline.CurrentTime,
+                End = -1
+            });
         }
 
         private void CreateRectangle(Point a, Point b)
@@ -207,18 +211,19 @@ namespace MathIsEZ
                 b.X = a.X + Math.Sign(b.X - a.X) * sz;
                 b.Y = a.Y + Math.Sign(b.Y - a.Y) * sz;
             }
-
-            Rectangle toAdd = new Rectangle
+            double minX = Math.Min(a.X, b.X);
+            double maxX = Math.Max(a.X, b.X);
+            double minY = Math.Min(a.Y, b.Y);
+            double maxY = Math.Max(a.Y, b.Y);
+            shapes.Add(new Shape(ShapeType.RECTANGLE)
             {
+                Points = new Point[] { new Point(minX, minY), new Point(maxX, maxY) },
                 Stroke = DrawColor1,
+                StrokeThickness = drawThickness,
                 Fill = DrawColor2,
-                Width = Math.Abs(b.X - a.X) + drawThickness,
-                Height = Math.Abs(b.Y - a.Y) + drawThickness,
-                StrokeThickness = drawThickness
-            };
-            ThicknessConverter converter = new ThicknessConverter();
-            toAdd.Margin = (Thickness)converter.ConvertFrom($"{(Math.Min(a.X, b.X) - drawThickness / 2).ToString()}, {(Math.Min(a.Y, b.Y) - drawThickness / 2).ToString()}, 0, 0");
-            LessonCanvas.Children.Add(toAdd);
+                Start = LessonTimeline.CurrentTime,
+                End = -1
+            });
         }
 
         #endregion
@@ -264,29 +269,15 @@ namespace MathIsEZ
 
                     if (isClosed)
                     {
-                        if(vertices.Count == 2)
+                        shapes.Add(new Shape(ShapeType.POLYGON)
                         {
-                            LessonCanvas.Children.Add(new Line()
-                            {
-                                Stroke = DrawColor1,
-                                Fill = DrawColor2,
-                                StrokeThickness = drawThickness,
-                                X1 = vertices[0].X,
-                                X2 = vertices[1].X,
-                                Y1 = vertices[0].Y,
-                                Y2 = vertices[1].Y
-                            });
-                        }
-                        else
-                        {
-                            LessonCanvas.Children.Add(new Polygon()
-                            {
-                                Points = new PointCollection(vertices),
-                                Fill = DrawColor2,
-                                StrokeThickness = drawThickness,
-                                Stroke = DrawColor1
-                            });
-                        }
+                            Points = vertices.ToArray(),
+                            Fill = DrawColor2,
+                            Stroke = DrawColor1,
+                            StrokeThickness = drawThickness,
+                            Start = LessonTimeline.CurrentTime,
+                            End = -1,
+                        });
                         PolygonAuxiliaryGeometry.Clear();
                         vertices.Clear();
                     }
@@ -331,23 +322,46 @@ namespace MathIsEZ
                 mouseup = true;
             }
         }
-
         #endregion
 
-        #region Additional effects when drawing shapes
+        #region Drawing shapes
 
-        readonly PathGeometry PolygonAuxiliaryGeometry = new PathGeometry();
+        private readonly PathGeometry PolygonAuxiliaryGeometry = new PathGeometry();
 
-        private void RenderEffects(DrawingContext dc)
+        private void RenderShapes(DrawingContext dc)
         {
             Point mouseloc = Mouse.GetPosition(this);
             Pen strokePen = new Pen(DrawColor1, drawThickness);
+
+            foreach(Shape shape in shapes)
+            {
+                if(shape.Start <= LessonTimeline.CurrentTime && (shape.End <= LessonTimeline.CurrentTime || shape.End == -1))
+                {
+                    switch(shape.Type)
+                    {
+                        case ShapeType.ELLIPSE:
+                            Point center = new Point((shape.Points[0].X + shape.Points[1].X) / 2, (shape.Points[0].Y + shape.Points[1].Y) / 2);
+                            dc.DrawEllipse(shape.Fill, new Pen(shape.Stroke, shape.StrokeThickness), center, shape.Points[1].X - center.X, shape.Points[1].Y - center.Y);
+                            break;
+                        case ShapeType.RECTANGLE:
+                            dc.DrawRectangle(shape.Fill, new Pen(shape.Stroke, shape.StrokeThickness), new Rect(shape.Points[0], shape.Points[1]));
+                            break;
+                        case ShapeType.POLYGON:
+                            dc.DrawGeometry(shape.Fill, new Pen(shape.Stroke, shape.StrokeThickness), shape.CreateGeometry());
+                            break;
+                        default: break;
+                    }
+                }
+            }
+
+            #region Additional effects when drawing shapes
+
             switch (CurrentlyDrawing)
             {
                 case DrawState.ELLIPSE:
                     if (startLocation.HasValue)
                     {
-                        if(shiftPressed)
+                        if (shiftPressed)
                         {
                             double radius = Math.Min(Math.Abs(mouseloc.X - startLocation.Value.X) / 2, Math.Abs(mouseloc.Y - startLocation.Value.Y) / 2);
                             dc.DrawEllipse(DrawColor2, strokePen,
@@ -381,14 +395,14 @@ namespace MathIsEZ
                 case DrawState.POLYGON:
                     if (vertices.Count > 1)
                     {
-                        foreach(Point vertex in vertices)
+                        foreach (Point vertex in vertices)
                         {
                             dc.DrawEllipse(null, new Pen(Brushes.White, 0.4), vertex, VertexSpace, VertexSpace);
                         }
                         dc.DrawGeometry(DrawColor2, strokePen, PolygonAuxiliaryGeometry);
                         dc.DrawLine(strokePen, vertices[vertices.Count - 1], mouseloc);
                     }
-                    else if(vertices.Count == 1)
+                    else if (vertices.Count == 1)
                     {
                         dc.DrawEllipse(null, new Pen(Brushes.White, 0.4), vertices[0], VertexSpace, VertexSpace);
                         dc.DrawLine(strokePen, vertices[0], mouseloc);
@@ -397,13 +411,8 @@ namespace MathIsEZ
                 default:
                     break;
             }
-        }
 
-        private readonly DispatcherTimer canvasRedrawTimer = new DispatcherTimer();
-
-        private void CanvasRedrawTimer_Tick(object sender, EventArgs e)
-        {
-            DrawingCanvas.InvalidateVisual();
+            #endregion
         }
 
         #endregion
