@@ -16,7 +16,7 @@ namespace MathIsEZ
 
         public DrawCanvas()
         {
-            //
+            IsHitTestVisible = false;
         }
 
         /// <summary>

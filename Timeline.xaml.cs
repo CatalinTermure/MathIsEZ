@@ -28,7 +28,7 @@ namespace MathIsEZ
             get => gradations;
             set
             {
-                if(value > 5 && value < 100 && CurrentTime + StartTime <= value * scale)
+                if(value > 5 && value < 100 && CurrentTime <= value * scale + StartTime)
                 {
                     gradations = value;
                     VisualCanvas.InvalidateVisual();
@@ -113,7 +113,7 @@ namespace MathIsEZ
             Loaded += Timeline_Loaded;
 
             MouseWheel += Timeline_MouseWheel;
-            MouseLeftButtonDown += Timeline_MouseLeftButtonDown;
+            PreviewMouseLeftButtonDown += Timeline_PreviewMouseLeftButtonDown;
             MouseDown += Timeline_MouseDown;
             MouseMove += Timeline_MouseMove;
             MouseUp += Timeline_MouseUp;
@@ -149,11 +149,13 @@ namespace MathIsEZ
             }
         }
 
-        private void Timeline_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void Timeline_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             Point location = e.GetPosition(this);
 
             CurrentTime = StartTime + (int)Math.Round(Math.Min(ActualWidth - 2 * startX, Math.Max(0d, (location.X - startX))) / (ActualWidth - (2 * startX)) * Gradations * scale);
+
+            e.Handled = true;
         }
 
         private void Timeline_MouseWheel(object sender, MouseWheelEventArgs e)

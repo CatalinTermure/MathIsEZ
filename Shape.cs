@@ -100,6 +100,7 @@ namespace MathIsEZ
                     {
                         polygonGeometry.Figures[0].Segments.Add(new LineSegment(Points[i], true));
                     }
+                    polygonGeometry.Figures[0].IsClosed = true;
                     return polygonGeometry;
                 default:
                     return null;
