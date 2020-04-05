@@ -1,2 +1,3 @@
 *.accdb
-**/.vs
+.vs/
+Plans/
