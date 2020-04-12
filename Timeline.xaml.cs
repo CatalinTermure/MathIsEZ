@@ -20,15 +20,18 @@ namespace MathIsEZ
     {
         private int startTime, currentTime = 0;
         private int gradations = 30;
-        private const int scale = 10;
-        private const double startX = 50, startY = 20;
+        private const int startGradations = 30;
+        private const int step = 10;
+        private const int zoomSpeed = 120;
+        private const double sideMargin = 50, upMargin = 20;
+        private const double numberSize = 10;
 
         public int Gradations
         {
             get => gradations;
             set
             {
-                if(value > 5 && value < 100 && CurrentTime <= value * scale + StartTime)
+                if(value > 5 && value < 100)
                 {
                     gradations = value;
                     VisualCanvas.InvalidateVisual();
@@ -41,7 +44,7 @@ namespace MathIsEZ
             get => startTime;
             set
             {
-                if(value > 0 && CurrentTime - value <= Gradations * scale && CurrentTime >= value)
+                if(value >= 0 && CurrentTime - value <= Gradations * step && CurrentTime >= value)
                 {
                     startTime = value;
                     VisualCanvas.InvalidateVisual();
@@ -70,38 +73,32 @@ namespace MathIsEZ
 
             Pen linePen = new Pen(new SolidColorBrush(Color.FromArgb(255, 16, 16, 16)), 1.5);
             Pen smallLinePen = new Pen(new SolidColorBrush(Color.FromArgb(255, 16, 16, 16)), 0.5);
-            double step = (ActualWidth - 2 * startX) / Gradations;
 
-            dc.DrawRectangle(new SolidColorBrush(Color.FromArgb(255, 72, 72, 72)), new Pen(Brushes.Black, 0), new Rect(new Point(startX, startY), new Size(ActualWidth - 2 * startX, ActualHeight)));
+            dc.DrawRectangle(new SolidColorBrush(Color.FromArgb(255, 72, 72, 72)), new Pen(Brushes.Black, 0), new Rect(new Point(sideMargin, upMargin), new Size(ActualWidth - 2 * sideMargin, ActualHeight)));
 
-            double gradationPosition = startX + ((double)(-StartTime % scale) / scale * step);
-            if(gradationPosition < startX)
+            bool isSmallLine = false;
+            double linePosition = sideMargin + (CurrentTime - StartTime) * (ActualWidth - 2 * sideMargin) / (step * Gradations);
+
+            FormattedText txt = new FormattedText(CurrentTime.ToString(), System.Globalization.CultureInfo.GetCultureInfo("en-us"),
+                FlowDirection.LeftToRight, new Typeface("Futura"), numberSize, Brushes.White, VisualTreeHelper.GetDpi(this).PixelsPerDip);
+
+            for (int t = (int)(Math.Ceiling(StartTime / 10.0) * 10); t <= StartTime + Gradations * step; isSmallLine = !isSmallLine, t += step / 2)
             {
-                gradationPosition += startX;
-            }
-            double upLimit = ActualWidth - startX;
-            for (int i = 0; gradationPosition <= upLimit; i++, gradationPosition += step)
-            {
-                dc.DrawText(new FormattedText($"{(i + StartTime / scale + (StartTime % scale != 0 ? 1 : 0)) * scale}", System.Globalization.CultureInfo.GetCultureInfo("en-us"),
-                    FlowDirection.LeftToRight, new Typeface("Futura"), (11 - Gradations / 30) * ActualWidth / 1570d, Brushes.White, VisualTreeHelper.GetDpi(this).PixelsPerDip),
-                    new Point(gradationPosition - 10, startY - 15 + Gradations / 30));
-                dc.DrawLine(linePen, new Point(gradationPosition, startY), 
-                    new Point(gradationPosition, ActualHeight));
-                if(gradationPosition + step / 2 <= upLimit)
+                FormattedText txtTmp = new FormattedText(t.ToString(), System.Globalization.CultureInfo.GetCultureInfo("en-us"),
+                    FlowDirection.LeftToRight, new Typeface("Futura"), numberSize, Brushes.White, VisualTreeHelper.GetDpi(this).PixelsPerDip);
+                double linePositionTmp = sideMargin + (t - StartTime) * (ActualWidth - 2 * sideMargin) / (step * Gradations);
+
+                if((Math.Abs(linePositionTmp - linePosition) > 1 + txt.Width / 2 + txtTmp.Width / 2) && !isSmallLine)
                 {
-                    dc.DrawLine(smallLinePen, new Point(gradationPosition + step / 2, startY),
-                       new Point(gradationPosition + step / 2, ActualHeight));
+                    dc.DrawText(txtTmp, new Point(linePositionTmp - txtTmp.Width / 2, upMargin - 15));
                 }
+
+                dc.DrawLine(isSmallLine ? smallLinePen : linePen, new Point(linePositionTmp, upMargin), new Point(linePositionTmp, ActualHeight));
             }
 
-            if(CurrentTime % scale != 0)
-            {
-                dc.DrawText(new FormattedText(CurrentTime.ToString(), System.Globalization.CultureInfo.GetCultureInfo("en-us"),
-                    FlowDirection.LeftToRight, new Typeface("Futura"), (11 - Gradations / 30) * ActualWidth / 1570d, Brushes.White, VisualTreeHelper.GetDpi(this).PixelsPerDip),
-                    new Point(startX - 5 + ((double)(CurrentTime - StartTime) / scale) * step, startY - 15));
-            }
+            dc.DrawText(txt, new Point(linePosition - txt.Width / 2, upMargin - 15));
 
-            dc.DrawLine(new Pen(Brushes.White, 1.5), new Point(startX + ((double)(CurrentTime - StartTime) / scale) * step, startY), new Point(startX + ((double)(CurrentTime - StartTime) / scale) * step, ActualHeight));
+            dc.DrawLine(new Pen(Brushes.White, 1.5), new Point(linePosition, upMargin), new Point(linePosition, ActualHeight));
         }
 
         public Timeline()
@@ -117,6 +114,12 @@ namespace MathIsEZ
             MouseDown += Timeline_MouseDown;
             MouseMove += Timeline_MouseMove;
             MouseUp += Timeline_MouseUp;
+            JumpButton.Click += JumpButton_Click;
+        }
+
+        private void JumpButton_Click(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException("Implement jumping through right click menu :)");
         }
 
         private void Timeline_MouseUp(object sender, MouseButtonEventArgs e)
@@ -135,7 +138,7 @@ namespace MathIsEZ
         {
             if(middleMousePressed)
             {
-                StartTime = lastStartTime + (int)(startDragPoint.X - e.GetPosition(this).X) * Gradations / 30;
+                StartTime = lastStartTime + (int)((startDragPoint.X - e.GetPosition(this).X) * Gradations / startGradations);
             }
         }
 
@@ -152,15 +155,18 @@ namespace MathIsEZ
         private void Timeline_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             Point location = e.GetPosition(this);
-
-            CurrentTime = StartTime + (int)Math.Round(Math.Min(ActualWidth - 2 * startX, Math.Max(0d, (location.X - startX))) / (ActualWidth - (2 * startX)) * Gradations * scale);
+            
+            if(location.X >= sideMargin && location.X + sideMargin < ActualWidth)
+            {
+                CurrentTime = (int)Math.Round(StartTime + (location.X - sideMargin) * (step * Gradations) / (ActualWidth - 2 * sideMargin));
+            }
 
             e.Handled = true;
         }
 
         private void Timeline_MouseWheel(object sender, MouseWheelEventArgs e)
         {
-            Gradations += e.Delta / 120;
+            Gradations += e.Delta / zoomSpeed;
         }
 
         private void Timeline_Loaded(object sender, RoutedEventArgs e)

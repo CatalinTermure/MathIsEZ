@@ -7,7 +7,27 @@
              mc:Ignorable="d" 
              d:DesignHeight="95" d:DesignWidth="1920" Background="#222222">
     <Border BorderBrush="Black" Grid.Row="1" BorderThickness="0, 3, 0, 0" Grid.ColumnSpan="2">
-        <local:DrawCanvas x:Name="VisualCanvas" />
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="50"/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="2*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="2*"/>
+                </Grid.RowDefinitions>
+
+                <Button x:Name="JumpButton" Grid.Row="3" Background="Black" Foreground="White" FontSize="7">
+                    Jump
+                </Button>
+            </Grid>
+            <local:DrawCanvas x:Name="VisualCanvas" Grid.Column="0" />
+        </Grid>
+        
     </Border>
 
 </UserControl>
