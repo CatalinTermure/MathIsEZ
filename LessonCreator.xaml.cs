@@ -44,7 +44,7 @@ namespace MathIsEZ
             LessonCanvas.InvalidateVisual();
         }
 
-        private DispatcherTimer redrawTimer = new DispatcherTimer();
+        private readonly DispatcherTimer redrawTimer = new DispatcherTimer();
 
         private void LessonCreator_Loaded(object sender, RoutedEventArgs e)
         {
@@ -72,7 +72,17 @@ namespace MathIsEZ
         {
             if(e.Key == Key.Z && ctrlPressed)
             {
-                throw new NotImplementedException("Implement ctrl+z after refactoring drawing code.");
+                if(shapeCount > 0)
+                {
+                    shapeCount--; // yes, this should be the field, not the property
+                }
+            }
+            else if(e.Key == Key.Y && ctrlPressed)
+            {
+                if(shapeCount < shapes.Count)
+                {
+                    shapeCount++;
+                }
             }
             else if (e.Key == Key.LeftShift)
             {
@@ -164,9 +174,27 @@ namespace MathIsEZ
 
         #region Fields and properties for storing lesson data 
 
-        private List<Shape> shapes = new List<Shape>();
-        private List<Graph> graphs = new List<Graph>();
-        private List<TextBlob> texts = new List<TextBlob>();
+        private readonly List<Shape> shapes = new List<Shape>();
+        private readonly List<Graph> graphs = new List<Graph>();
+        private readonly List<TextBlob> texts = new List<TextBlob>();
+
+        /// <summary>
+        /// DO NOT ACCESS THIS IF YOU DO NOT KNOW WHY THE PROPERTY EXISTS
+        /// </summary>
+        private int shapeCount = 0;
+
+        private int ShapeCount
+        {
+            get => shapeCount;
+            set
+            {
+                if(value > shapeCount)
+                {
+                    shapes.RemoveRange(shapeCount, shapes.Count - shapeCount);
+                }
+                shapeCount = value;
+            }
+        }
 
         #endregion
 
@@ -176,7 +204,7 @@ namespace MathIsEZ
         private const double VertexSpace = 8;
 
         #region Mouse events for editing shape attributes
-        /// TODO
+        // TODO
         #endregion
 
         #region Helper functions for inserting shapes
@@ -193,6 +221,7 @@ namespace MathIsEZ
             double maxX = Math.Max(a.X, b.X);
             double minY = Math.Min(a.Y, b.Y);
             double maxY = Math.Max(a.Y, b.Y);
+            ShapeCount++;
             shapes.Add(new Shape(ShapeType.ELLIPSE) {
                 Points = new Point[]{ new Point(minX, minY), new Point(maxX, maxY) }, 
                 Stroke = DrawColor1,
@@ -215,6 +244,7 @@ namespace MathIsEZ
             double maxX = Math.Max(a.X, b.X);
             double minY = Math.Min(a.Y, b.Y);
             double maxY = Math.Max(a.Y, b.Y);
+            ShapeCount++;
             shapes.Add(new Shape(ShapeType.RECTANGLE)
             {
                 Points = new Point[] { new Point(minX, minY), new Point(maxX, maxY) },
@@ -269,6 +299,7 @@ namespace MathIsEZ
 
                     if (isClosed)
                     {
+                        ShapeCount++;
                         shapes.Add(new Shape(ShapeType.POLYGON)
                         {
                             Points = vertices.ToArray(),
@@ -333,8 +364,9 @@ namespace MathIsEZ
             Point mouseloc = Mouse.GetPosition(this);
             Pen strokePen = new Pen(DrawColor1, drawThickness);
 
-            foreach(Shape shape in shapes)
+            for(int i = 0; i < shapeCount; i++)
             {
+                Shape shape = shapes[i];
                 if(shape.Start <= LessonTimeline.CurrentTime && (shape.End <= LessonTimeline.CurrentTime || shape.End == -1))
                 {
                     switch(shape.Type)
