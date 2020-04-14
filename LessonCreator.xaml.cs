@@ -33,7 +33,7 @@ namespace MathIsEZ
         {
             InitializeComponent();
 
-            LessonCanvas.ToDraw = RenderShapes;
+            LessonCanvas.ToDraw = RenderShapes; // TODO: OPTIMIZE THIS SHIT, IT'S HORRIBLE
             redrawTimer.Tick += RedrawTimer_Tick;
             redrawTimer.Interval = TimeSpan.FromMilliseconds(10);
             redrawTimer.Start();
@@ -74,14 +74,14 @@ namespace MathIsEZ
             {
                 if(shapeCount > 0)
                 {
-                    shapeCount--; // yes, this should be the field, not the property
+                    shapeCount--;
                 }
             }
             else if(e.Key == Key.Y && ctrlPressed)
             {
                 if(shapeCount < shapes.Count)
                 {
-                    shapeCount++;
+                    shapeCount++; // yes, this should be the field, not the property
                 }
             }
             else if (e.Key == Key.LeftShift)
@@ -331,6 +331,11 @@ namespace MathIsEZ
         private void LessonCanvas_MouseUp(object sender, MouseButtonEventArgs e)
         {
             if(e.ChangedButton == MouseButton.Right)
+            {
+                e.Handled = true;
+                return;
+            }
+            if(e.GetPosition(this).Y + LessonTimeline.ActualHeight > WHeight)
             {
                 e.Handled = true;
                 return;
