@@ -34,7 +34,7 @@ namespace MathIsEZ
         {
             ((Parent as Grid).Parent as LessonCreator).BtnShow.Visibility = Visibility.Visible;
             Visibility = Visibility.Collapsed;
-            ((Parent as Grid).Parent as LessonCreator).LessonCanvas.Focus();
+            ((Parent as Grid).Parent as LessonCreator).ShapesCanvas.Focus();
         }
 
         private void HighlightButton(Button btn)
@@ -49,38 +49,92 @@ namespace MathIsEZ
 
         private void BtnEllipse_Click(object sender, RoutedEventArgs e)
         {
-            ((Parent as Grid).Parent as LessonCreator).CurrentlyDrawing = DrawState.ELLIPSE;
-            HighlightButton(sender as Button);
+            if(highlightedButton == sender)
+            {
+                highlightedButton = null;
+                ((Parent as Grid).Parent as LessonCreator).CurrentlyDrawing = DrawState.NONE;
+                (sender as Button).Background = DefaultBtnColor;
+            }
+            else
+            {
+                ((Parent as Grid).Parent as LessonCreator).CurrentlyDrawing = DrawState.ELLIPSE;
+                HighlightButton(sender as Button);
+            }
         }
 
         private void BtnRectangle_Click(object sender, RoutedEventArgs e)
         {
-            ((Parent as Grid).Parent as LessonCreator).CurrentlyDrawing = DrawState.RECTANGLE;
-            HighlightButton(sender as Button);
+            if (highlightedButton == sender)
+            {
+                highlightedButton = null;
+                ((Parent as Grid).Parent as LessonCreator).CurrentlyDrawing = DrawState.NONE;
+                (sender as Button).Background = DefaultBtnColor;
+            }
+            else
+            {
+                ((Parent as Grid).Parent as LessonCreator).CurrentlyDrawing = DrawState.RECTANGLE;
+                HighlightButton(sender as Button);
+            }
         }
 
         private void BtnPolygon_Click(object sender, RoutedEventArgs e)
         {
-            ((Parent as Grid).Parent as LessonCreator).CurrentlyDrawing = DrawState.POLYGON;
-            HighlightButton(sender as Button);
+            if (highlightedButton == sender)
+            {
+                highlightedButton = null;
+                ((Parent as Grid).Parent as LessonCreator).CurrentlyDrawing = DrawState.NONE;
+                (sender as Button).Background = DefaultBtnColor;
+            }
+            else
+            {
+                ((Parent as Grid).Parent as LessonCreator).CurrentlyDrawing = DrawState.POLYGON;
+                HighlightButton(sender as Button);
+            }
         }
 
         private void BtnTriangle_Click(object sender, RoutedEventArgs e)
         {
-            ((Parent as Grid).Parent as LessonCreator).CurrentlyDrawing = DrawState.TRIANGLE;
-            HighlightButton(sender as Button);
+            if (highlightedButton == sender)
+            {
+                highlightedButton = null;
+                ((Parent as Grid).Parent as LessonCreator).CurrentlyDrawing = DrawState.NONE;
+                (sender as Button).Background = DefaultBtnColor;
+            }
+            else
+            {
+                ((Parent as Grid).Parent as LessonCreator).CurrentlyDrawing = DrawState.TRIANGLE;
+                HighlightButton(sender as Button);
+            }
         }
 
         private void BtnGraph_Click(object sender, RoutedEventArgs e)
         {
-            ((Parent as Grid).Parent as LessonCreator).CurrentlyDrawing = DrawState.GRAPH;
-            HighlightButton(sender as Button);
+            if (highlightedButton == sender)
+            {
+                highlightedButton = null;
+                ((Parent as Grid).Parent as LessonCreator).CurrentlyDrawing = DrawState.NONE;
+                (sender as Button).Background = DefaultBtnColor;
+            }
+            else
+            {
+                ((Parent as Grid).Parent as LessonCreator).CurrentlyDrawing = DrawState.GRAPH;
+                HighlightButton(sender as Button);
+            }
         }
 
         private void BtnText_Click(object sender, RoutedEventArgs e)
         {
-            ((Parent as Grid).Parent as LessonCreator).CurrentlyDrawing = DrawState.TEXT;
-            HighlightButton(sender as Button);
+            if (highlightedButton == sender)
+            {
+                highlightedButton = null;
+                ((Parent as Grid).Parent as LessonCreator).CurrentlyDrawing = DrawState.NONE;
+                (sender as Button).Background = DefaultBtnColor;
+            }
+            else
+            {
+                ((Parent as Grid).Parent as LessonCreator).CurrentlyDrawing = DrawState.TEXT;
+                HighlightButton(sender as Button);
+            }
         }
 
         #endregion

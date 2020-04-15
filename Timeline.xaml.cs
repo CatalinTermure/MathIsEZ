@@ -59,7 +59,7 @@ namespace MathIsEZ
             {
                 currentTime = value;
                 VisualCanvas.InvalidateVisual();
-                ((Parent as Grid).Parent as LessonCreator).LessonCanvas.InvalidateVisual();
+                ((Parent as Grid).Parent as LessonCreator).ShapesCanvas.InvalidateVisual();
             }
         }
 

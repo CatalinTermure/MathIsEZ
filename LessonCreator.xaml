@@ -23,7 +23,10 @@
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
 
-        <local:DrawCanvas x:Name="LessonCanvas" Grid.ColumnSpan="2"
+        <local:DrawCanvas x:Name="ShapesCanvas" Grid.ColumnSpan="2"
+                          Grid.RowSpan="2" />
+        
+        <local:DrawCanvas x:Name="AdditionalEffectsCanvas" Grid.ColumnSpan="2"
                           Grid.RowSpan="2" />
 
         <Button x:Name="BtnShow" Width="25" Height="25"
