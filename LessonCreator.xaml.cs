@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using System.Threading;
 using System.Windows;
@@ -167,13 +168,23 @@ namespace MathIsEZ
 
         #endregion
 
-        #region Fields and properties for storing lesson data 
+        #region Fields and properties for storing lesson data
 
-        private readonly List<Shape> Shapes = new List<Shape>();
-        private readonly List<Graph> Graphs = new List<Graph>();
-        private readonly List<TextBlob> Texts = new List<TextBlob>();
+        private readonly List<Tuple<Shape, int>> Shapes = new List<Tuple<Shape, int>>();
+        private readonly List<Tuple<Graph, int>> Graphs = new List<Tuple<Graph, int>>();
+        private readonly List<Tuple<TextBlob, int>> Texts = new List<Tuple<TextBlob, int>>();
 
-        private int ShapeCount = 0;
+        private int shapeCount = 0;
+
+        private int ShapeCount
+        {
+            get => shapeCount;
+            set
+            {
+                shapeCount = value;
+                ShapesCanvas.InvalidateVisual();
+            }
+        }
 
         #endregion
 
@@ -187,6 +198,22 @@ namespace MathIsEZ
         #endregion
 
         #region Helper functions for inserting shapes
+
+        /// <summary>
+        /// Trims the oldest shapes so that only count shapes remain.
+        /// </summary>
+        /// <param name="count"> Number of shapes that should remain </param>
+        private void TrimShapes(int count)
+        {
+            for(int i = 0; i < Shapes.Count; i++)
+            {
+                if(Shapes[i].Item2 > count)
+                {
+                    Shapes.RemoveAt(i);
+                    i--;
+                }
+            }
+        }
 
         /// <summary>
         /// Creates ellipse defined by the rectangle defined by the two points
@@ -203,20 +230,20 @@ namespace MathIsEZ
             double maxX = Math.Max(a.X, b.X);
             double minY = Math.Min(a.Y, b.Y);
             double maxY = Math.Max(a.Y, b.Y);
-            if(ShapeCount < Shapes.Count)
+            if (ShapeCount < Shapes.Count)
             {
-                Shapes.RemoveRange(ShapeCount - 1, Shapes.Count - ShapeCount);
+                TrimShapes(ShapeCount);
             }
-            ShapeCount++;
-            Shapes.Add(new Shape(ShapeType.ELLIPSE) {
-                Points = new Point[]{ new Point(minX, minY), new Point(maxX, maxY) }, 
+            InsertInOrderedList(Shapes, new Tuple<Shape, int>(new Shape(ShapeType.ELLIPSE)
+            {
+                Points = new Point[] { new Point(minX, minY), new Point(maxX, maxY) },
                 Stroke = DrawColor1,
                 StrokeThickness = drawThickness,
                 Fill = DrawColor2,
                 Start = LessonTimeline.CurrentTime,
                 End = -1
-            });
-            ShapesCanvas.InvalidateVisual();
+            }, ShapeCount + 1), ShapeComparer);
+            ShapeCount++;
         }
 
         /// <summary>
@@ -224,8 +251,11 @@ namespace MathIsEZ
         /// </summary>
         private void CreatePolygon()
         {
-            ShapeCount++;
-            Shapes.Add(new Shape(ShapeType.POLYGON)
+            if(ShapeCount < Shapes.Count)
+            {
+                TrimShapes(ShapeCount);
+            }
+            InsertInOrderedList(Shapes, new Tuple<Shape, int>(new Shape(ShapeType.POLYGON)
             {
                 Points = vertices.ToArray(),
                 Fill = DrawColor2,
@@ -233,10 +263,10 @@ namespace MathIsEZ
                 StrokeThickness = drawThickness,
                 Start = LessonTimeline.CurrentTime,
                 End = -1,
-            });
+            }, ShapeCount + 1), ShapeComparer);
+            ShapeCount++;
             PolygonAuxiliaryGeometry.Clear();
             vertices.Clear();
-            ShapesCanvas.InvalidateVisual();
         }
 
         /// <summary>
@@ -256,10 +286,9 @@ namespace MathIsEZ
             double maxY = Math.Max(a.Y, b.Y);
             if (ShapeCount < Shapes.Count)
             {
-                Shapes.RemoveRange(ShapeCount - 1, Shapes.Count - ShapeCount);
+                TrimShapes(ShapeCount);
             }
-            ShapeCount++;
-            Shapes.Add(new Shape(ShapeType.RECTANGLE)
+            InsertInOrderedList(Shapes, new Tuple<Shape, int>(new Shape(ShapeType.RECTANGLE)
             {
                 Points = new Point[] { new Point(minX, minY), new Point(maxX, maxY) },
                 Stroke = DrawColor1,
@@ -267,9 +296,8 @@ namespace MathIsEZ
                 Fill = DrawColor2,
                 Start = LessonTimeline.CurrentTime,
                 End = -1
-            });
-            MessageBox.Show(LessonTimeline.CurrentTime.ToString());
-            ShapesCanvas.InvalidateVisual();
+            }, ShapeCount + 1), ShapeComparer);
+            ShapeCount++;
         }
 
         #endregion
@@ -336,33 +364,31 @@ namespace MathIsEZ
             }
             else if(e.ChangedButton == MouseButton.Right)
             {
-                foreach(Shape shape in Shapes)
-                {
-                    if(shape.Start >= LessonTimeline.CurrentTime)
-                    {
-                        //
-                    }
-                }
+                // TODO: Shape menu for animations and others
             }
         }
 
-        private void LessonCanvas_MouseUp(object sender, MouseButtonEventArgs e)
+        public void LessonCanvas_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            if(e.GetPosition(this).Y + LessonTimeline.ActualHeight > WHeight || startLocation == null)
-            {
-                e.Handled = true;
-                return;
-            }
             if(e.ChangedButton == MouseButton.Left)
             {
-                EffectsRedrawTimer.Stop();
                 switch (CurrentlyDrawing)
                 {
                     case DrawState.ELLIPSE:
+                        if(!startLocation.HasValue)
+                        {
+                            return;
+                        }
                         CreateEllipse(startLocation.Value, e.GetPosition(this));
+                        EffectsRedrawTimer.Stop();
                         break;
                     case DrawState.RECTANGLE:
+                        if (!startLocation.HasValue)
+                        {
+                            return;
+                        }
                         CreateRectangle(startLocation.Value, e.GetPosition(this));
+                        EffectsRedrawTimer.Stop();
                         break;
                     default:
                         break;
@@ -381,12 +407,35 @@ namespace MathIsEZ
 
         private void RenderShapes(DrawingContext dc)
         {
-            for(int i = 0; i < ShapeCount; i++)
+            int time = LessonTimeline.CurrentTime;
+            // lower bound search for time
+            int lo = -1, hi = Shapes.Count, mid;
+            while (hi - lo > 1)
             {
-                Shape shape = Shapes[i];
-                if(shape.Start <= LessonTimeline.CurrentTime && (shape.End <= LessonTimeline.CurrentTime || shape.End == -1))
+                mid = (lo + hi) / 2;
+                if (Shapes[mid].Item1.Start < time)
+                    lo = mid;
+                else
+                    hi = mid;
+            }
+            if(hi < 0 || hi > Shapes.Count || Shapes.Count == 0)
+            {
+                return;
+            }
+            if(hi == Shapes.Count || Shapes[hi].Item1.Start > time)
+            {
+                hi--;
+            }
+            for(int i = 0; i <= hi; i++)
+            {
+                if(Shapes[i].Item2 > ShapeCount)
                 {
-                    switch(shape.Type)
+                    continue;
+                }
+                Shape shape = Shapes[i].Item1;
+                if(shape.End >= time || shape.End == -1)
+                {
+                    switch (shape.Type)
                     {
                         case ShapeType.ELLIPSE:
                             Point center = new Point((shape.Points[0].X + shape.Points[1].X) / 2, (shape.Points[0].Y + shape.Points[1].Y) / 2);
@@ -476,6 +525,39 @@ namespace MathIsEZ
         /// Returns the distance between two points.
         /// </summary>
         private double GetDistance(Point a, Point b) => Math.Sqrt((a.X - b.X) * (a.X - b.X) + (a.Y - b.Y) * (a.Y - b.Y));
+
+        #region Compare functions for ordering lists
+
+        private class ShapeCompare : Comparer<Tuple<Shape, int>>
+        {
+            public override int Compare(Tuple<Shape, int> x, Tuple<Shape, int> y)
+            {
+                if (x.Item1.Start == y.Item1.Start)
+                    return 0;
+                else if (x.Item1.Start < y.Item1.Start)
+                    return -1;
+                else
+                    return 1;
+            }
+        };
+
+        private readonly ShapeCompare ShapeComparer = new ShapeCompare();
+
+        #endregion
+
+        private void InsertInOrderedList<T>(List<T> l, T item, Comparer<T> comp)
+        {
+            int lo = -1, hi = l.Count, mid;
+            while (hi - lo > 1)
+            {
+                mid = (hi + lo) / 2;
+                if (comp.Compare(l[mid], item) < 0)
+                    lo = mid;
+                else
+                    hi = mid;
+            }
+            l.Insert(hi, item);
+        }
 
         #endregion
     }
